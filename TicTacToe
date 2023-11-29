@@ -1,0 +1,143 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Oct 17 13:32:45 2023
+Updated on Tue Nov 14 21:15:03 2023
+
+@author: The Crimson Simmer
+#ECT130-301 Final Project
+#Tic Tac Toe
+"""
+#Welcome to the game
+print("Hello and welcome to the wonderful Tic Tac Toe game! ")
+print()
+    
+board = []
+mirror = []
+
+#create game board
+def create_board():
+    for i in range(3):
+        row = []
+        for j in range(3):
+            row.append("_")
+        board.append(row)
+        mirror.append(row)
+
+#show game board
+def board_state():
+    for row in board:
+        for item in row:
+            print(item, end=" ")
+        print()
+
+
+#take user input and checking if the location has been taken
+def user_input():
+    while True:
+        print()
+        row, col = list(
+            map(int, input("Enter row and column numbers to choose your location. ").split()))
+        print()
+        row = row - 1
+        col = col - 1
+        #check location before updating board
+        if  mirror[row][col] == 'X':
+            print("This location has been taken by player 1, please select a new location. ")
+            board[row][col] = mirror[row][col]
+        elif mirror[row][col] == 'O':
+            print("This location has been taken by player 2, please select a new location. ")
+            board[row][col] = mirror[row][col]
+        else:
+            board[row][col] = player
+            mirror[row][col] = board[row][col]
+            break
+            
+#full board check            
+def full_board_check():
+    for row in board:
+        for item in row:
+            if item == "_ ":
+                return False
+    return True
+
+def Winner(player):
+    win = None
+    
+    n = len(board)
+    
+    #checking rows
+    for i in range(n):
+        win = True
+        for j in range(n):
+            if board[i][j] != player:
+                win = False
+                break
+        if win:
+            return win
+        
+    #checking columns
+    for i in range(n):
+        win = True
+        for j in range(n):
+            if board[j][i] != player:
+                win = False
+                break
+        if win:
+            return win
+        
+    #checking diagonals
+    win = True
+    for i in range (n):
+        if board[i][i] != player:
+            win = False
+            break
+        
+    if win:
+            return win
+        
+    win = True
+    for i in range(n):
+        if board[i][n - 1 - i] != player:
+            win = False
+            break
+            
+    if win:
+        return win
+    return False
+        
+    for row in board:
+        for item in row:
+            if item == "-":
+                return False
+    return True
+
+#start the game
+create_board()
+board_state()
+while True:
+    #Player 1
+    player = 'X'
+    user_input()
+    
+    board_state()
+    # full board check
+    if full_board_check():
+        print(" ")
+        
+    #Winner Check
+    if Winner(player):
+        print(f"Player {player} wins the game! ")
+        break
+    
+    #Player 2
+    player = 'O'
+    user_input()
+    board_state()
+    # full board check
+    if full_board_check():
+        print(" ")
+        
+    #Winner Check
+    if Winner(player):
+        print(f"Player {player} wins the game! ")
+        break
